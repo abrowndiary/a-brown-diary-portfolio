@@ -10,15 +10,13 @@ export function NavbarBrand() {
       </div>
 
       <div className='relative ms-2 flex overflow-hidden whitespace-nowrap transition-all duration-500 ease-in-expo group-hover:pe-8'>
-        <h5 className='transition-transform duration-500 ease-in-expo group-hover:-translate-x-full'>
-          Code by
-        </h5>
-        <h5 className='ps-1 transition-transform duration-500 ease-in-expo group-hover:-translate-x-14'>
-          Dennis
-        </h5>
-        <h5 className='absolute left-28 ps-1 transition-transform duration-500 ease-in-expo group-hover:-translate-x-14'>
-          Snellenberg
-        </h5>
+        <div className='flex transition-transform duration-500 ease-in-expo group-hover:-translate-x-full'>
+          <h5>Code by</h5>
+          <h5 className='ps-1'>Haris</h5>
+        </div>
+        <div className='absolute left-0 flex transition-transform duration-500 ease-in-expo translate-x-full group-hover:translate-x-0'>
+          <h5>A brown Diary</h5>
+        </div>
       </div>
     </div>
   );
