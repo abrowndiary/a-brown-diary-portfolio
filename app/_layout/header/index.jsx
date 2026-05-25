@@ -29,7 +29,7 @@ export function Header() {
           <h1 className='text-[max(9em,15vw)]'>
             <ParallaxSlider repeat={4} baseVelocity={2}>
               <span className='pe-12'>
-                Dennis Snellenberg
+                A Brown Diary
                 <span className='spacer'>—</span>
               </span>
             </ParallaxSlider>
@@ -43,8 +43,8 @@ export function Header() {
             </div>
 
             <h4 className='text-[clamp(1.55em,2.5vw,2.75em)]'>
-              <span className='block'>Freelance</span>
-              <span className='block'>Designer &amp; Developer</span>
+              <span className='block'>Tech</span>
+              <span className='block'>Business &amp; Life in Germany</span>
             </h4>
           </div>
         </div>
