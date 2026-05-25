@@ -3,7 +3,6 @@
 import { useState } from 'react';
 
 import { motion } from 'framer-motion';
-import { Dot } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -29,15 +28,25 @@ export function OffcanvasLinks() {
         onPointerEnter={() => setActiveLink(href)}
       >
         <motion.div
-          className='absolute -left-11'
+          className='absolute left-0 top-1/2 size-2.5 -translate-y-1/2 rounded-full bg-background'
           variants={scale}
           animate={activeLink === href ? 'open' : 'closed'}
+        />
+        <motion.div
+          animate={{ x: activeLink === href ? 30 : 0 }}
+          transition={{
+            type: 'tween',
+            ease: [0.76, 0, 0.24, 1],
+            duration: 0.3,
+          }}
         >
-          <Dot size={36} />
+          <Link
+            href={href}
+            className='text-[clamp(2.5rem,5.5vw,4.5rem)] font-light capitalize leading-[1.4] text-background'
+          >
+            {title}
+          </Link>
         </motion.div>
-        <Link href={href} className='text-6xl capitalize'>
-          {title}
-        </Link>
       </motion.li>
     );
   });

@@ -1,21 +1,25 @@
 'use client';
 
-import { Copyright } from 'lucide-react';
-
 export function NavbarBrand() {
   return (
-    <div className='group flex cursor-pointer pb-5'>
-      <div className='transition-transform duration-500 ease-in-expo group-hover:rotate-[360deg]'>
-        <Copyright />
-      </div>
+    <div className='group flex cursor-pointer items-center pb-5'>
+      <span className='text-base font-light leading-none transition-transform duration-500 ease-in-expo group-hover:rotate-[360deg]'>
+        ©
+      </span>
 
-      <div className='relative ms-2 flex overflow-hidden whitespace-nowrap transition-all duration-500 ease-in-expo group-hover:pe-8'>
+      <div className='relative ms-2 flex overflow-hidden whitespace-nowrap transition-all duration-500 ease-in-expo group-hover:pe-28'>
         <div className='flex transition-transform duration-500 ease-in-expo group-hover:-translate-x-full'>
-          <h5>Code by</h5>
-          <h5 className='ps-1'>Haris</h5>
+          <span className='text-base font-light lowercase leading-none'>
+            code by
+          </span>
+          <span className='ps-1 text-base font-light lowercase leading-none'>
+            haris
+          </span>
         </div>
-        <div className='absolute left-0 flex transition-transform duration-500 ease-in-expo translate-x-full group-hover:translate-x-0'>
-          <h5>A brown Diary</h5>
+        <div className='absolute left-0 flex translate-x-full transition-transform duration-500 ease-in-expo group-hover:translate-x-0'>
+          <span className='text-base font-light lowercase leading-none'>
+            a brown diary
+          </span>
         </div>
       </div>
     </div>

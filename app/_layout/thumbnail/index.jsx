@@ -39,7 +39,7 @@ export function Thumbnail() {
       onPointerMove={({ clientX, clientY }) => moveItems(clientX, clientY)}
     >
       <div className='my-8 flex flex-col gap-10'>
-        <ThumbnailLabel>Recent work</ThumbnailLabel>
+        <ThumbnailLabel>domains</ThumbnailLabel>
         <ThumbnailList
           handlePointerEnter={handlePointerEnter}
           handlePointerLeave={handlePointerLeave}

@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 import Link from 'next/link';
 
 import { MagneticButton } from '@/components';
@@ -9,6 +11,26 @@ import { randomId } from '@/utils';
 import { ListTitle } from './index.styled';
 
 export function SocialInfo() {
+  const [timeStr, setTimeStr] = useState('');
+  const [year, setYear] = useState('2026');
+
+  useEffect(() => {
+    setYear(new Date().getFullYear().toString());
+    const updateTime = () => {
+      const formatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Europe/Berlin',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+        timeZoneName: 'short',
+      });
+      setTimeStr(formatter.format(new Date()));
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   const medias = socialMedias.map(({ href, title }) => {
     const id = randomId();
     return (
@@ -29,12 +51,12 @@ export function SocialInfo() {
         <div className='flex gap-8'>
           <div>
             <ListTitle>Version</ListTitle>
-            <p className='mt-7'>2022 © Edition</p>
+            <p className='mt-7'>{year} © Edition</p>
           </div>
           <div>
             <ListTitle>Local time</ListTitle>
             <p className='mt-7'>
-              <time>04:01 PM GMT+2</time>
+              <time>{timeStr || '05:00 PM GMT+2'}</time>
             </p>
           </div>
         </div>
