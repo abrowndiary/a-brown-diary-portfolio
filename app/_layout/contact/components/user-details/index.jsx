@@ -54,7 +54,7 @@ export function UserDetails({ transformX }) {
       <Row>
         <div className='flex w-full flex-col gap-4 lg:flex-row'>
           <div>
-            <a href='mailto:info@dennissnellenberg.com'>
+            <a href='mailto:info@abrowndiary.com'>
               <MagneticButton
                 variant='outline'
                 size='md'
@@ -71,7 +71,7 @@ export function UserDetails({ transformX }) {
                 size='md'
                 className='w-full border-muted-foreground'
               >
-                +31 6 27 84 74 30
+                +49 123 456789
               </MagneticButton>
             </a>
           </div>
