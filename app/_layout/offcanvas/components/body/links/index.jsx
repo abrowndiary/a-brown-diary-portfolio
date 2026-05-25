@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -12,10 +12,16 @@ import { scale, slideOut } from './variants';
 
 export function OffcanvasLinks() {
   const pathname = usePathname();
-  const [activeLink, setActiveLink] = useState(pathname);
+  const [activeLink, setActiveLink] = useState(null);
+
+  useEffect(() => {
+    setActiveLink(pathname);
+  }, [pathname]);
 
   const items = navItems.map(({ href, title }, index) => {
     const id = index;
+    const isActive = activeLink === href;
+
     return (
       <motion.li
         key={id}
@@ -30,10 +36,11 @@ export function OffcanvasLinks() {
         <motion.div
           className='absolute left-0 top-1/2 size-2.5 -translate-y-1/2 rounded-full bg-background'
           variants={scale}
-          animate={activeLink === href ? 'open' : 'closed'}
+          initial='closed'
+          animate={isActive ? 'open' : 'closed'}
         />
         <motion.div
-          animate={{ x: activeLink === href ? 30 : 0 }}
+          animate={{ x: isActive ? 30 : 0 }}
           transition={{
             type: 'tween',
             ease: [0.76, 0, 0.24, 1],
