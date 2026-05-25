@@ -9,7 +9,7 @@ import { MagneticButton, ParallaxFade, ParallaxReveal } from '@/components';
 import { Title, Wrapper } from './index.styled';
 
 const phrase =
-  'I worked in digital transformation, AI implementation, cybersecurity and automation globally. Built life in scratch in Germany and a startup. This diary is where I share what actually works — and what doesn’t';
+  'I worked in digital transformation, AI implementation, cybersecurity and automation globally. Built life from scratch in Germany and a startup. This diary is where I share what actually works — and what doesn’t';
 
 export function Description() {
   return (
