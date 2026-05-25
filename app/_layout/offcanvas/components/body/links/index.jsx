@@ -13,6 +13,7 @@ import { scale, slideOut } from './variants';
 export function OffcanvasLinks() {
   const pathname = usePathname();
   const [activeLink, setActiveLink] = useState(null);
+  const [selectedLink, setSelectedLink] = useState(null);
 
   useEffect(() => {
     setActiveLink(pathname);
@@ -20,7 +21,7 @@ export function OffcanvasLinks() {
 
   const items = navItems.map(({ href, title }, index) => {
     const id = index;
-    const isActive = activeLink === href;
+    const isActive = (selectedLink ?? activeLink) === href;
 
     return (
       <motion.li
@@ -31,21 +32,18 @@ export function OffcanvasLinks() {
         initial='initial'
         animate='enter'
         exit='exit'
-        onPointerEnter={() => setActiveLink(href)}
+        onMouseEnter={() => setSelectedLink(href)}
       >
         <motion.div
-          className='absolute left-0 top-1/2 size-2.5 -translate-y-1/2 rounded-full bg-background'
+          className='absolute left-[-24px] top-1/2 size-2.5 -translate-y-1/2 rounded-full bg-background'
           variants={scale}
           initial='closed'
           animate={isActive ? 'open' : 'closed'}
         />
-        <motion.div
-          animate={{ x: isActive ? 30 : 0 }}
-          transition={{
-            type: 'tween',
-            ease: [0.76, 0, 0.24, 1],
-            duration: 0.3,
-          }}
+        <div
+          className={`transition-transform duration-300 ease-out ${
+            isActive ? 'translate-x-[12px]' : 'translate-x-0'
+          }`}
         >
           <Link
             href={href}
@@ -53,7 +51,7 @@ export function OffcanvasLinks() {
           >
             {title}
           </Link>
-        </motion.div>
+        </div>
       </motion.li>
     );
   });
@@ -65,7 +63,7 @@ export function OffcanvasLinks() {
           Navigation
         </h5>
       </div>
-      <ul onPointerLeave={() => setActiveLink(pathname)}>{items}</ul>
+      <ul onMouseLeave={() => setSelectedLink(null)}>{items}</ul>
     </div>
   );
 }
