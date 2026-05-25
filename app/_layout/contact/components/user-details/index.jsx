@@ -60,7 +60,7 @@ export function UserDetails({ transformX }) {
                 size='md'
                 className='w-full border-muted-foreground'
               >
-                abrowndiary@gmail.com
+                info@abrowndiary.com
               </MagneticButton>
             </a>
           </div>
