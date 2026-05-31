@@ -7,11 +7,12 @@ import {
   Circle,
   FolderKanban,
   Globe2,
+  Image as ImageIcon,
   LayoutDashboard,
-  Link as LinkIcon,
   Loader2,
   Plus,
   Settings,
+  Trash2,
   UploadCloud,
 } from 'lucide-react';
 
@@ -19,6 +20,7 @@ const views = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
   { id: 'projects', label: 'Manage Projects', icon: FolderKanban },
   { id: 'add', label: 'Add New Project', icon: Plus },
+  { id: 'media', label: 'Media Library', icon: ImageIcon },
   { id: 'settings', label: 'Global Settings', icon: Settings },
 ];
 
@@ -128,6 +130,38 @@ function MediaUploader({ onUpload, compact = false }) {
       </div>
     </div>
   );
+}
+
+function formatBytes(bytes = 0) {
+  if (!bytes) {
+    return '0 B';
+  }
+
+  const units = ['B', 'KB', 'MB', 'GB'];
+  const index = Math.min(
+    Math.floor(Math.log(bytes) / Math.log(1024)),
+    units.length - 1,
+  );
+
+  return `${(bytes / 1024 ** index).toFixed(index === 0 ? 0 : 1)} ${
+    units[index]
+  }`;
+}
+
+function getMediaUsage(content, path) {
+  const usage = [];
+
+  if (content.home.heroMedia?.src === path) {
+    usage.push('Hero background');
+  }
+
+  content.projects.forEach(project => {
+    if ((project.media || []).some(item => item.src === path)) {
+      usage.push(project.title);
+    }
+  });
+
+  return usage;
 }
 
 function ProjectForm({ project, filters, onChange, onUpload, title }) {
@@ -306,6 +340,9 @@ export function DashboardClient({ initialContent }) {
   const [message, setMessage] = useState('');
   const [publishing, setPublishing] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [mediaFiles, setMediaFiles] = useState([]);
+  const [loadingMedia, setLoadingMedia] = useState(false);
+  const [deletingMediaPath, setDeletingMediaPath] = useState('');
 
   useEffect(() => {
     fetch('/api/admin/session')
@@ -313,6 +350,12 @@ export function DashboardClient({ initialContent }) {
       .then(data => setAuthenticated(Boolean(data.authenticated)))
       .catch(() => setAuthenticated(false));
   }, []);
+
+  useEffect(() => {
+    if (authenticated && activeView === 'media') {
+      loadMediaFiles();
+    }
+  }, [activeView, authenticated]);
 
   const categories = useMemo(
     () => content.work.filters.filter(filter => filter.toLowerCase() !== 'all'),
@@ -385,7 +428,84 @@ export function DashboardClient({ initialContent }) {
     }
 
     setMessage(`Uploaded ${data.path}`);
+    if (activeView === 'media') {
+      await loadMediaFiles();
+    }
     return data;
+  }
+
+  async function loadMediaFiles() {
+    setLoadingMedia(true);
+    setMessage('');
+
+    const response = await fetch('/api/admin/media');
+    const data = await response.json();
+
+    setLoadingMedia(false);
+
+    if (!response.ok) {
+      setMessage(data.error || 'Could not load media library.');
+      return;
+    }
+
+    setMediaFiles(data.files || []);
+  }
+
+  function removeMediaReferences(path) {
+    setContent(current => ({
+      ...current,
+      home:
+        current.home.heroMedia?.src === path
+          ? {
+              ...current.home,
+              heroMedia: {
+                type: 'placeholder',
+                src: '',
+                alt: `${current.site.name} hero background`,
+              },
+            }
+          : current.home,
+      projects: current.projects.map(project => ({
+        ...project,
+        media: (project.media || []).filter(item => item.src !== path),
+      })),
+    }));
+  }
+
+  async function deleteMedia(path) {
+    const usage = getMediaUsage(content, path);
+    const confirmed = window.confirm(
+      usage.length
+        ? `This file is used by: ${usage.join(
+            ', ',
+          )}. Delete it and remove those references from the draft?`
+        : 'Delete this uploaded file from the repository?',
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    setDeletingMediaPath(path);
+    setMessage('');
+
+    const response = await fetch('/api/admin/media', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ path }),
+    });
+    const data = await response.json();
+
+    setDeletingMediaPath('');
+
+    if (!response.ok) {
+      setMessage(data.error || 'Media deletion failed.');
+      return;
+    }
+
+    removeMediaReferences(path);
+    await loadMediaFiles();
+    setMessage('Media deleted. Publish content if references were removed.');
   }
 
   function updateProject(index, project) {
@@ -727,6 +847,118 @@ export function DashboardClient({ initialContent }) {
               >
                 Add project to draft
               </button>
+            </div>
+          ) : null}
+
+          {activeView === 'media' ? (
+            <div className='grid gap-6'>
+              <section className='grid gap-5 rounded bg-secondary p-6 lg:grid-cols-[0.45fr_0.55fr] lg:p-8'>
+                <div>
+                  <p className='text-xs uppercase tracking-[0.18em] text-muted-foreground'>
+                    Media Library
+                  </p>
+                  <h2 className='mt-3 text-[clamp(3rem,7vw,6rem)] font-light leading-none'>
+                    Uploaded files
+                  </h2>
+                  <p className='mt-5 max-w-xl text-muted-foreground'>
+                    Files are stored in `public/images/` and served publicly
+                    from `/images/file-name`. Delete removes the repository file
+                    and clears draft references.
+                  </p>
+                </div>
+                <MediaUploader
+                  onUpload={async file => {
+                    await uploadMedia(file);
+                    await loadMediaFiles();
+                  }}
+                  compact
+                />
+              </section>
+
+              <section className='rounded bg-secondary p-5'>
+                <div className='mb-5 flex flex-wrap items-center justify-between gap-4'>
+                  <h3 className='text-3xl font-light'>Repository media</h3>
+                  <button
+                    type='button'
+                    onClick={loadMediaFiles}
+                    className='rounded-full border border-border px-5 py-2 text-sm'
+                  >
+                    Refresh
+                  </button>
+                </div>
+
+                {loadingMedia ? (
+                  <div className='min-h-40 flex items-center justify-center text-muted-foreground'>
+                    <Loader2 size={22} className='mr-2 animate-spin' />
+                    Loading media
+                  </div>
+                ) : null}
+
+                {!loadingMedia && !mediaFiles.length ? (
+                  <div className='min-h-40 grid place-items-center rounded border border-border bg-background p-8 text-center text-muted-foreground'>
+                    No uploaded media found in `public/images/`.
+                  </div>
+                ) : null}
+
+                <div className='grid gap-3'>
+                  {mediaFiles.map(file => {
+                    const usage = getMediaUsage(content, file.path);
+                    const isDeleting = deletingMediaPath === file.path;
+
+                    return (
+                      <article
+                        key={file.path}
+                        className='grid gap-4 rounded border border-border bg-background p-4 md:grid-cols-[1fr_auto]'
+                      >
+                        <div className='min-w-0'>
+                          <div className='flex items-center gap-3'>
+                            <span className='size-10 grid shrink-0 place-items-center rounded bg-secondary'>
+                              <ImageIcon size={18} strokeWidth={1.5} />
+                            </span>
+                            <div className='min-w-0'>
+                              <p className='truncate text-lg font-light'>
+                                {file.name}
+                              </p>
+                              <p className='truncate text-sm text-muted-foreground'>
+                                {file.path} · {formatBytes(file.size)}
+                              </p>
+                            </div>
+                          </div>
+                          <div className='mt-4 flex flex-wrap gap-2'>
+                            {usage.length ? (
+                              usage.map(item => (
+                                <span
+                                  key={item}
+                                  className='rounded-full border border-border px-3 py-1 text-xs'
+                                >
+                                  Used: {item}
+                                </span>
+                              ))
+                            ) : (
+                              <span className='rounded-full border border-border px-3 py-1 text-xs text-muted-foreground'>
+                                Not referenced in current draft
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <button
+                          type='button'
+                          onClick={() => deleteMedia(file.path)}
+                          disabled={isDeleting}
+                          className='inline-flex items-center justify-center gap-2 rounded-full border border-border px-5 py-3 text-sm text-muted-foreground transition hover:border-foreground hover:text-foreground disabled:opacity-60'
+                        >
+                          {isDeleting ? (
+                            <Loader2 size={16} className='animate-spin' />
+                          ) : (
+                            <Trash2 size={16} />
+                          )}
+                          Delete
+                        </button>
+                      </article>
+                    );
+                  })}
+                </div>
+              </section>
             </div>
           ) : null}
 

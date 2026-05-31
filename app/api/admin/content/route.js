@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
+import { isSameOriginRequest } from '@/app/_lib/admin-security';
 import { isValidSession } from '@/app/_lib/admin-session';
 import { siteContent } from '@/content';
 
@@ -30,6 +31,10 @@ export async function GET() {
 export async function PUT(request) {
   if (!isValidSession(cookies())) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  if (!isSameOriginRequest(request)) {
+    return NextResponse.json({ error: 'Forbidden request.' }, { status: 403 });
   }
 
   const nextContent = await request.json();
