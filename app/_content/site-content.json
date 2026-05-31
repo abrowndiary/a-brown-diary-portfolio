@@ -37,7 +37,12 @@
     ],
     "intro": "I work across digital transformation, AI implementation, cybersecurity and automation globally. I built life from scratch in Germany and a startup. This diary is where I share what actually works and what does not.",
     "supportingText": "The combination of physical AI, cybersecurity and digital transformation positions this diary in a practical place in the technology world.",
-    "recentLabel": "domains"
+    "recentLabel": "domains",
+    "heroMedia": {
+      "type": "placeholder",
+      "src": "",
+      "alt": "A Brown Diary hero background"
+    }
   },
   "about": {
     "headline": "Helping practical ideas become useful digital systems",
@@ -110,7 +115,7 @@
       }
     ]
   },
-  "socialLinks": [],
+  "socialLinks": [{ "href": "#", "title": "YouTube" }],
   "projects": [
     {
       "slug": "life-experiences",

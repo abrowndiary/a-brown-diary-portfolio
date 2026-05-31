@@ -18,13 +18,5 @@ export function OffcanvasFooter() {
     );
   });
 
-  if (!socialMedias.length) {
-    return (
-      <p className='text-sm uppercase tracking-[0.18em] text-background/50'>
-        Dashboard: /dashboard
-      </p>
-    );
-  }
-
   return <ul className='flex w-full justify-between gap-10'>{medias}</ul>;
 }

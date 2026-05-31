@@ -9,6 +9,8 @@ import { siteContent } from '@/content';
 import { slideUp } from './variants';
 
 export function Header() {
+  const heroMedia = siteContent.home.heroMedia;
+
   return (
     <motion.header
       className='relative h-screen overflow-hidden bg-secondary-foreground text-background'
@@ -16,7 +18,28 @@ export function Header() {
       initial='initial'
       animate='enter'
     >
-      <div className='absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(200,196,184,0.35),transparent_35%),linear-gradient(135deg,#141517,#24262b_55%,#a79f8e)]' />
+      {heroMedia?.src ? (
+        heroMedia.type === 'video' ? (
+          <video
+            src={heroMedia.src}
+            className='size-full absolute inset-0 object-cover'
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+        ) : (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={heroMedia.src}
+            className='size-full absolute inset-0 object-cover'
+            alt={heroMedia.alt || 'Hero background'}
+          />
+        )
+      ) : (
+        <div className='absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(200,196,184,0.35),transparent_35%),linear-gradient(135deg,#141517,#24262b_55%,#a79f8e)]' />
+      )}
+      <div className='bg-secondary-foreground/35 absolute inset-0' />
       <div className='absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-secondary-foreground to-transparent' />
 
       <div className='hanger-container hidden md:block'>
