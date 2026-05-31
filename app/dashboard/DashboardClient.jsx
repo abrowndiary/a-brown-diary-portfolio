@@ -38,6 +38,26 @@ const emptyProject = {
   media: [],
 };
 
+const emptyContactDetail = {
+  label: 'New detail',
+  value: '',
+  href: '',
+};
+
+const emptyFormField = {
+  label: 'New field',
+  placeholder: '',
+};
+
+const emptyStorageProvider = {
+  id: '',
+  name: '',
+  type: 'external',
+  enabled: false,
+  basePath: '',
+  publicBaseUrl: '',
+};
+
 function slugify(value) {
   return value
     .toLowerCase()
@@ -421,6 +441,15 @@ export function DashboardClient({ initialContent }) {
   }
 
   async function uploadMedia(file) {
+    const activeProvider = content.mediaStorage?.activeProvider || 'github';
+
+    if (activeProvider !== 'github') {
+      setMessage(
+        'This storage provider is configured, but direct uploads are currently connected only for GitHub repository storage.',
+      );
+      return null;
+    }
+
     setUploading(true);
     setMessage('');
 
@@ -625,6 +654,121 @@ export function DashboardClient({ initialContent }) {
         formFields: current.contact.formFields.map((item, itemIndex) =>
           itemIndex === index ? { ...item, [field]: value } : item,
         ),
+      },
+    }));
+  }
+
+  function addFormField() {
+    setContent(current => ({
+      ...current,
+      contact: {
+        ...current.contact,
+        formFields: [...current.contact.formFields, emptyFormField],
+      },
+    }));
+  }
+
+  function removeFormField(index) {
+    setContent(current => ({
+      ...current,
+      contact: {
+        ...current.contact,
+        formFields: current.contact.formFields.filter(
+          (_, itemIndex) => itemIndex !== index,
+        ),
+      },
+    }));
+  }
+
+  function updateContactDetail(index, field, value) {
+    setContent(current => ({
+      ...current,
+      contact: {
+        ...current.contact,
+        details: current.contact.details.map((item, itemIndex) =>
+          itemIndex === index ? { ...item, [field]: value } : item,
+        ),
+      },
+    }));
+  }
+
+  function addContactDetail() {
+    setContent(current => ({
+      ...current,
+      contact: {
+        ...current.contact,
+        details: [...current.contact.details, emptyContactDetail],
+      },
+    }));
+  }
+
+  function removeContactDetail(index) {
+    setContent(current => ({
+      ...current,
+      contact: {
+        ...current.contact,
+        details: current.contact.details.filter(
+          (_, itemIndex) => itemIndex !== index,
+        ),
+      },
+    }));
+  }
+
+  function updateStorageProvider(index, field, value) {
+    setContent(current => ({
+      ...current,
+      mediaStorage: {
+        activeProvider: current.mediaStorage?.activeProvider || 'github',
+        providers: (current.mediaStorage?.providers || []).map(
+          (provider, providerIndex) =>
+            providerIndex === index
+              ? { ...provider, [field]: value }
+              : provider,
+        ),
+      },
+    }));
+  }
+
+  function addStorageProvider() {
+    const id = `provider-${Date.now()}`;
+
+    setContent(current => ({
+      ...current,
+      mediaStorage: {
+        activeProvider: current.mediaStorage?.activeProvider || 'github',
+        providers: [
+          ...(current.mediaStorage?.providers || []),
+          { ...emptyStorageProvider, id, name: 'New storage provider' },
+        ],
+      },
+    }));
+  }
+
+  function removeStorageProvider(id) {
+    setContent(current => {
+      const providers = (current.mediaStorage?.providers || []).filter(
+        provider => provider.id !== id,
+      );
+
+      return {
+        ...current,
+        mediaStorage: {
+          activeProvider:
+            current.mediaStorage?.activeProvider === id
+              ? providers[0]?.id || 'github'
+              : current.mediaStorage?.activeProvider || 'github',
+          providers,
+        },
+      };
+    });
+  }
+
+  function setActiveStorageProvider(id) {
+    setContent(current => ({
+      ...current,
+      mediaStorage: {
+        activeProvider: id,
+        providers: current.mediaStorage?.providers || [],
       },
     }));
   }
@@ -1037,9 +1181,75 @@ export function DashboardClient({ initialContent }) {
                   />
                 </Field>
                 <div className='grid gap-4'>
-                  <p className='text-xs uppercase tracking-[0.16em] text-muted-foreground'>
-                    Form fields
-                  </p>
+                  <div className='flex items-center justify-between gap-4'>
+                    <p className='text-xs uppercase tracking-[0.16em] text-muted-foreground'>
+                      Contact detail blocks
+                    </p>
+                    <button
+                      type='button'
+                      onClick={addContactDetail}
+                      className='rounded-full border border-border px-4 py-2 text-xs uppercase tracking-[0.14em]'
+                    >
+                      Add detail
+                    </button>
+                  </div>
+                  {content.contact.details.map((detail, index) => (
+                    <div
+                      key={`${detail.label}-${index}`}
+                      className='grid gap-3 rounded border border-border bg-background p-4'
+                    >
+                      <TextInput
+                        value={detail.label}
+                        onChange={event =>
+                          updateContactDetail(
+                            index,
+                            'label',
+                            event.target.value,
+                          )
+                        }
+                        placeholder='Label'
+                      />
+                      <TextInput
+                        value={detail.value}
+                        onChange={event =>
+                          updateContactDetail(
+                            index,
+                            'value',
+                            event.target.value,
+                          )
+                        }
+                        placeholder='Visible value'
+                      />
+                      <TextInput
+                        value={detail.href}
+                        onChange={event =>
+                          updateContactDetail(index, 'href', event.target.value)
+                        }
+                        placeholder='mailto:, tel:, https:// or blank'
+                      />
+                      <button
+                        type='button'
+                        onClick={() => removeContactDetail(index)}
+                        className='justify-self-start text-xs uppercase tracking-[0.14em] text-muted-foreground'
+                      >
+                        Remove detail
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <div className='grid gap-4'>
+                  <div className='flex items-center justify-between gap-4'>
+                    <p className='text-xs uppercase tracking-[0.16em] text-muted-foreground'>
+                      Form fields
+                    </p>
+                    <button
+                      type='button'
+                      onClick={addFormField}
+                      className='rounded-full border border-border px-4 py-2 text-xs uppercase tracking-[0.14em]'
+                    >
+                      Add field
+                    </button>
+                  </div>
                   {content.contact.formFields.map((field, index) => (
                     <div
                       key={`${field.label}-${index}`}
@@ -1063,6 +1273,13 @@ export function DashboardClient({ initialContent }) {
                         }
                         placeholder='Placeholder text'
                       />
+                      <button
+                        type='button'
+                        onClick={() => removeFormField(index)}
+                        className='justify-self-start text-xs uppercase tracking-[0.14em] text-muted-foreground'
+                      >
+                        Remove field
+                      </button>
                     </div>
                   ))}
                 </div>
@@ -1196,6 +1413,156 @@ export function DashboardClient({ initialContent }) {
                       </article>
                     );
                   })}
+                </div>
+              </section>
+
+              <section className='rounded bg-secondary p-6 lg:p-8'>
+                <div className='mb-6 flex flex-wrap items-center justify-between gap-4'>
+                  <div>
+                    <p className='text-xs uppercase tracking-[0.18em] text-muted-foreground'>
+                      Storage providers
+                    </p>
+                    <h3 className='mt-3 text-4xl font-light'>
+                      Media storage spaces
+                    </h3>
+                  </div>
+                  <button
+                    type='button'
+                    onClick={addStorageProvider}
+                    className='rounded-full bg-foreground px-5 py-3 text-sm text-background'
+                  >
+                    Add storage
+                  </button>
+                </div>
+                <p className='mb-6 max-w-3xl text-sm text-muted-foreground'>
+                  GitHub repository storage is the active upload backend. Google
+                  Drive, Hetzner or other external spaces can be configured here
+                  so their public URLs are documented in content, but direct
+                  upload needs provider credentials/API wiring before it can be
+                  used safely.
+                </p>
+                <div className='grid gap-4'>
+                  {(content.mediaStorage?.providers || []).map(
+                    (provider, index) => {
+                      const isActive =
+                        (content.mediaStorage?.activeProvider || 'github') ===
+                        provider.id;
+
+                      return (
+                        <article
+                          key={provider.id}
+                          className='grid gap-4 rounded border border-border bg-background p-4 lg:grid-cols-[0.8fr_0.7fr_0.7fr_auto]'
+                        >
+                          <div className='grid gap-3'>
+                            <TextInput
+                              value={provider.name}
+                              onChange={event =>
+                                updateStorageProvider(
+                                  index,
+                                  'name',
+                                  event.target.value,
+                                )
+                              }
+                              placeholder='Provider name'
+                            />
+                            <TextInput
+                              value={provider.id}
+                              onChange={event =>
+                                updateStorageProvider(
+                                  index,
+                                  'id',
+                                  slugify(event.target.value),
+                                )
+                              }
+                              placeholder='provider-id'
+                            />
+                          </div>
+                          <div className='grid gap-3'>
+                            <select
+                              value={provider.type}
+                              onChange={event =>
+                                updateStorageProvider(
+                                  index,
+                                  'type',
+                                  event.target.value,
+                                )
+                              }
+                              className='w-full rounded border border-border bg-background px-4 py-3 text-sm outline-none'
+                            >
+                              <option value='github'>GitHub</option>
+                              <option value='google-drive'>Google Drive</option>
+                              <option value='hetzner'>Hetzner</option>
+                              <option value='external'>External URL</option>
+                            </select>
+                            <label className='flex items-center gap-2 text-sm text-muted-foreground'>
+                              <input
+                                type='checkbox'
+                                checked={Boolean(provider.enabled)}
+                                onChange={event =>
+                                  updateStorageProvider(
+                                    index,
+                                    'enabled',
+                                    event.target.checked,
+                                  )
+                                }
+                              />
+                              Enabled
+                            </label>
+                          </div>
+                          <div className='grid gap-3'>
+                            <TextInput
+                              value={provider.basePath || ''}
+                              onChange={event =>
+                                updateStorageProvider(
+                                  index,
+                                  'basePath',
+                                  event.target.value,
+                                )
+                              }
+                              placeholder='Folder/path'
+                            />
+                            <TextInput
+                              value={provider.publicBaseUrl || ''}
+                              onChange={event =>
+                                updateStorageProvider(
+                                  index,
+                                  'publicBaseUrl',
+                                  event.target.value,
+                                )
+                              }
+                              placeholder='Public base URL'
+                            />
+                          </div>
+                          <div className='flex flex-col gap-2'>
+                            <button
+                              type='button'
+                              onClick={() =>
+                                setActiveStorageProvider(provider.id)
+                              }
+                              className={`rounded-full px-4 py-2 text-sm ${
+                                isActive
+                                  ? 'bg-foreground text-background'
+                                  : 'border border-border text-muted-foreground'
+                              }`}
+                            >
+                              {isActive ? 'Active' : 'Use'}
+                            </button>
+                            {provider.id !== 'github' ? (
+                              <button
+                                type='button'
+                                onClick={() =>
+                                  removeStorageProvider(provider.id)
+                                }
+                                className='rounded-full border border-border px-4 py-2 text-sm text-muted-foreground'
+                              >
+                                Remove
+                              </button>
+                            ) : null}
+                          </div>
+                        </article>
+                      );
+                    },
+                  )}
                 </div>
               </section>
             </div>

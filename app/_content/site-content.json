@@ -116,6 +116,19 @@
     ]
   },
   "socialLinks": [{ "href": "#", "title": "YouTube" }],
+  "mediaStorage": {
+    "activeProvider": "github",
+    "providers": [
+      {
+        "id": "github",
+        "name": "GitHub repository",
+        "type": "github",
+        "enabled": true,
+        "basePath": "public/images",
+        "publicBaseUrl": "/images"
+      }
+    ]
+  },
   "projects": [
     {
       "slug": "life-experiences",

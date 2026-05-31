@@ -2,11 +2,10 @@
 
 import { useEffect, useState } from 'react';
 
-import { Dot } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { Center, MagneticButton } from '@/components';
+import { MagneticButton } from '@/components';
 import { navItems } from '@/data';
 import { randomId } from '@/utils';
 
@@ -24,16 +23,14 @@ export function NavbarList() {
 
     return (
       <li key={id} className='group p-4'>
-        <Link href={href} passHref>
+        <Link href={href} className='relative' passHref>
           <MagneticButton>
             <span className='text-base capitalize'>{title}</span>
-            <Center>
-              <Dot
-                className={`transition-transform duration-200 ease-in-expo ${
-                  isActive ? 'scale-100' : 'scale-0 group-hover:scale-100'
-                }`}
-              />
-            </Center>
+            <span
+              className={`size-1.5 absolute left-1/2 top-full mt-1 -translate-x-1/2 rounded-full bg-background transition-transform duration-300 ease-in-expo ${
+                isActive ? 'scale-100' : 'scale-0 group-hover:scale-100'
+              }`}
+            />
           </MagneticButton>
         </Link>
       </li>

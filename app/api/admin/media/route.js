@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 
 import { isSameOriginRequest } from '@/app/_lib/admin-security';
 import { isValidSession } from '@/app/_lib/admin-session';
+import { siteContent } from '@/content';
 
 const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
 const ALLOWED_EXTENSIONS = new Set([
@@ -175,6 +176,17 @@ export async function POST(request) {
   }
 
   const { owner, repo, branch, token } = getRepoConfig();
+  const activeProvider = siteContent.mediaStorage?.activeProvider || 'github';
+
+  if (activeProvider !== 'github') {
+    return NextResponse.json(
+      {
+        error:
+          'Direct uploads are currently available only for GitHub repository storage.',
+      },
+      { status: 400 },
+    );
+  }
 
   if (!token) {
     return NextResponse.json(
