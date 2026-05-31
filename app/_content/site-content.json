@@ -7,19 +7,34 @@
     "timezone": "Europe/Berlin",
     "email": "info@abrowndiary.com",
     "phone": "+49 123 456789",
-    "contactIntro": "Let's work together",
+    "contactIntro": "Let's Connect!",
     "metaDescription": "A Brown Diary explores physical AI, cybersecurity, automation, digital transformation, business, productivity and life in Germany."
   },
   "navigation": [
-    { "href": "/", "title": "home" },
-    { "href": "/work", "title": "work" },
-    { "href": "/about", "title": "about" },
-    { "href": "/contact", "title": "contact" }
+    {
+      "href": "/",
+      "title": "home"
+    },
+    {
+      "href": "/work",
+      "title": "work"
+    },
+    {
+      "href": "/about",
+      "title": "about"
+    },
+    {
+      "href": "/contact",
+      "title": "contact"
+    }
   ],
   "home": {
     "eyebrow": "Located in Germany",
     "headline": "A Brown Diary",
-    "heroSubhead": ["Tech", "Business & Life in Germany"],
+    "heroSubhead": [
+      "Tech",
+      "Business & Life in Germany"
+    ],
     "intro": "I work across digital transformation, AI implementation, cybersecurity and automation globally. I built life from scratch in Germany and a startup. This diary is where I share what actually works and what does not.",
     "supportingText": "The combination of physical AI, cybersecurity and digital transformation positions this diary in a practical place in the technology world.",
     "recentLabel": "domains"
@@ -48,21 +63,51 @@
   },
   "work": {
     "headline": "Creating useful digital systems and field notes",
-    "filters": ["All", "AI", "Cybersecurity", "Automation", "Life"],
+    "filters": [
+      "All",
+      "AI",
+      "Cybersecurity",
+      "Automation",
+      "Life"
+    ],
     "archiveCount": 14
   },
   "contact": {
     "headline": "Let's start a project together",
     "details": [
-      { "label": "Email", "value": "info@abrowndiary.com", "href": "mailto:info@abrowndiary.com" },
-      { "label": "Phone", "value": "+49 123 456789", "href": "tel:+49123456789" },
-      { "label": "Location", "value": "Germany", "href": "" }
+      {
+        "label": "Email",
+        "value": "info@abrowndiary.com",
+        "href": "mailto:info@abrowndiary.com"
+      },
+      {
+        "label": "Phone",
+        "value": "+49 123 456789",
+        "href": "tel:+49123456789"
+      },
+      {
+        "label": "Location",
+        "value": "Germany",
+        "href": ""
+      }
     ],
     "formFields": [
-      { "label": "What's your name?", "placeholder": "John Doe" },
-      { "label": "What's your email?", "placeholder": "john@example.com" },
-      { "label": "What are you working on?", "placeholder": "AI workflow, website, consulting..." },
-      { "label": "Your message", "placeholder": "Tell me what you want to build." }
+      {
+        "label": "What's your name?",
+        "placeholder": "John Doe"
+      },
+      {
+        "label": "What's your email?",
+        "placeholder": "john@example.com"
+      },
+      {
+        "label": "What are you working on?",
+        "placeholder": "AI workflow, website, consulting..."
+      },
+      {
+        "label": "Your message",
+        "placeholder": "Tell me what you want to build."
+      }
     ]
   },
   "socialLinks": [],
@@ -100,16 +145,40 @@
   ],
   "mediaStrips": [
     [
-      { "type": "placeholder", "label": "AI" },
-      { "type": "placeholder", "label": "Security" },
-      { "type": "placeholder", "label": "Automation" },
-      { "type": "placeholder", "label": "Germany" }
+      {
+        "type": "placeholder",
+        "label": "AI"
+      },
+      {
+        "type": "placeholder",
+        "label": "Security"
+      },
+      {
+        "type": "placeholder",
+        "label": "Automation"
+      },
+      {
+        "type": "placeholder",
+        "label": "Germany"
+      }
     ],
     [
-      { "type": "placeholder", "label": "Business" },
-      { "type": "placeholder", "label": "Systems" },
-      { "type": "placeholder", "label": "Diary" },
-      { "type": "placeholder", "label": "Field notes" }
+      {
+        "type": "placeholder",
+        "label": "Business"
+      },
+      {
+        "type": "placeholder",
+        "label": "Systems"
+      },
+      {
+        "type": "placeholder",
+        "label": "Diary"
+      },
+      {
+        "type": "placeholder",
+        "label": "Field notes"
+      }
     ]
   ]
 }
