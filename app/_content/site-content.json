@@ -115,7 +115,12 @@
       }
     ]
   },
-  "socialLinks": [{ "href": "#", "title": "YouTube" }],
+  "socialLinks": [
+    {
+      "href": "#",
+      "title": "YouTube"
+    }
+  ],
   "mediaStorage": {
     "activeProvider": "github",
     "providers": [
