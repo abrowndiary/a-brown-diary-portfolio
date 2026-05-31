@@ -1,6 +1,3 @@
-export const socialMedias = [
-  {
-    href: 'https://www.linkedin.com/in/dennissnellenberg/',
-    title: 'LinkedIn',
-  },
-];
+import { siteContent } from '@/content';
+
+export const socialMedias = siteContent.socialLinks;

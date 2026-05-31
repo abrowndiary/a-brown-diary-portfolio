@@ -1,27 +1,67 @@
+import { siteContent } from '@/content';
 import { Contact, Navbar, Transition } from '@/layout';
 
-/** @type {import('next').Metadata} */
 export const metadata = {
-  title: 'Contact | A Brown Diary',
-  description:
-    'Helping brands thrive in the digital world. Located in Germany. Tech, AI, Cybersecurity, Automation, Business & Life in Germany.',
+  title: `Contact | ${siteContent.site.name}`,
+  description: siteContent.site.metaDescription,
 };
 
 export default function ContactPage() {
   return (
     <Transition>
       <Navbar />
-      <div className='relative flex h-[60vh] items-center justify-center bg-secondary-foreground text-background'>
-        <h1 className='text-[clamp(3em,8vw,6em)] font-light lowercase'>
-          contact
-        </h1>
-      </div>
-      <main className='flex min-h-[40vh] items-center justify-center bg-background p-8 text-foreground'>
-        <p className='max-w-2xl text-center text-xl font-light leading-relaxed'>
-          {
-            "Let's work together. Get in touch to start a project or discuss technology consulting."
-          }
-        </p>
+      <main className='bg-background text-foreground'>
+        <section className='container grid min-h-screen gap-16 pb-24 pt-40 lg:grid-cols-[1.2fr_0.8fr]'>
+          <div className='flex flex-col justify-end'>
+            <p className='mb-8 text-sm uppercase tracking-[0.18em] text-muted-foreground'>
+              Contact
+            </p>
+            <h1 className='text-[clamp(3.75rem,9vw,8rem)] font-light leading-[0.95]'>
+              {siteContent.contact.headline}
+            </h1>
+          </div>
+
+          <form className='self-end border-t border-border'>
+            {siteContent.contact.formFields.map((field, index) => (
+              <label
+                key={field.label}
+                className='grid gap-4 border-b border-border py-7'
+              >
+                <span className='text-sm text-muted-foreground'>
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <span className='text-2xl font-light'>{field.label}</span>
+                <input
+                  className='bg-transparent py-3 text-lg outline-none placeholder:text-muted-foreground'
+                  placeholder={field.placeholder}
+                />
+              </label>
+            ))}
+            <button
+              type='button'
+              className='mt-8 rounded-full bg-foreground px-8 py-4 text-background'
+            >
+              Prepare message
+            </button>
+          </form>
+        </section>
+
+        <section className='container grid gap-8 border-t border-border py-16 md:grid-cols-3'>
+          {siteContent.contact.details.map(detail => (
+            <div key={detail.label}>
+              <p className='text-sm uppercase tracking-[0.18em] text-muted-foreground'>
+                {detail.label}
+              </p>
+              {detail.href ? (
+                <a className='mt-4 block text-xl' href={detail.href}>
+                  {detail.value}
+                </a>
+              ) : (
+                <p className='mt-4 text-xl'>{detail.value}</p>
+              )}
+            </div>
+          ))}
+        </section>
       </main>
       <Contact />
     </Transition>

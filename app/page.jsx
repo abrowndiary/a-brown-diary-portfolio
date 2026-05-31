@@ -1,3 +1,4 @@
+import { siteContent } from '@/content';
 import {
   Contact,
   Description,
@@ -10,9 +11,8 @@ import {
 
 /** @type {import('next').Metadata} */
 export const metadata = {
-  title: 'Home | A A Brown Diary',
-  description:
-    'Helping brands thrive in the digital world. Located in The Netherlands. Delivering tailor-made digital designs and building interactive websites from scratch. © Code by Dennis',
+  title: `Home | ${siteContent.site.name}`,
+  description: siteContent.site.metaDescription,
 };
 
 export default function Home() {

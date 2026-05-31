@@ -15,7 +15,7 @@ export function ThumbnailList({
   handlePointerLeave,
   moveItems,
 }) {
-  const items = thumbnailOptions.map(({ href, title }, index) => {
+  const items = thumbnailOptions.map(({ href, title, services }, index) => {
     const id = index;
     return (
       <li
@@ -48,7 +48,7 @@ export function ThumbnailList({
             {title}
           </h4>
           <p className='text-lg font-medium transition-transform duration-300'>
-            Design & Development
+            {services}
           </p>
         </Link>
       </li>

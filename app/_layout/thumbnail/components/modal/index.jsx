@@ -3,7 +3,6 @@
 import { forwardRef } from 'react';
 
 import { motion } from 'framer-motion';
-import { CldImage } from 'next-cloudinary';
 
 import { Center } from '@/components';
 import { thumbnailOptions } from '@/data';
@@ -17,16 +16,28 @@ export const ThumbnailModal = forwardRef(
    * @param {import('react').ForwardedRef<HTMLElement>} ref
    */
   function ThumbnailModal({ variants, active, index, ...props }, ref) {
-    const items = thumbnailOptions.map(({ title, image }) => {
+    const items = thumbnailOptions.map(({ title, image, category }) => {
       const id = randomId();
       return (
         <Center key={id} className='h-full w-full'>
-          <CldImage
-            src={image}
-            width={320}
-            height={320}
-            alt={`${title} thumbnail image`}
-          />
+          {image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={image}
+              width={320}
+              height={320}
+              alt={`${title} thumbnail image`}
+            />
+          ) : (
+            <div className='size-full grid place-items-center bg-[linear-gradient(135deg,#1c1d20,#4c4f56_55%,#c8c4b8)] p-8 text-center text-background'>
+              <div>
+                <p className='text-xs uppercase tracking-[0.18em] text-background/60'>
+                  {category}
+                </p>
+                <p className='mt-4 text-4xl font-light leading-none'>{title}</p>
+              </div>
+            </div>
+          )}
         </Center>
       );
     });

@@ -2,9 +2,9 @@
 
 import { motion } from 'framer-motion';
 import { MoveDownRight } from 'lucide-react';
-import { CldImage } from 'next-cloudinary';
 
 import { ParallaxSlider } from '@/components';
+import { siteContent } from '@/content';
 
 import { slideUp } from './variants';
 
@@ -16,21 +16,15 @@ export function Header() {
       initial='initial'
       animate='enter'
     >
-      <CldImage
-        src='Dennis-Portfolio/images/lapetmmek4fymz68m4u8'
-        className='object-cover md:scale-125 md:object-contain'
-        fill={true}
-        sizes='100vw'
-        alt='Dennis Snellenberg Personal Picture'
-      />
+      <div className='absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(200,196,184,0.35),transparent_35%),linear-gradient(135deg,#141517,#24262b_55%,#a79f8e)]' />
+      <div className='absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-secondary-foreground to-transparent' />
 
-      {/* Located in Germany Globe Badge */}
       <div className='hanger-container hidden md:block'>
         <div className='hanger'>
           <p className='hanger-text'>
             <span>Located</span>
             <span>in</span>
-            <span>Germany</span>
+            <span>{siteContent.site.location}</span>
           </p>
           <svg
             width='300px'
@@ -64,8 +58,8 @@ export function Header() {
           <h1 className='text-[max(9em,15vw)]'>
             <ParallaxSlider repeat={4} baseVelocity={2}>
               <span className='pe-12'>
-                A Brown Diary
-                <span className='spacer'>—</span>
+                {siteContent.home.headline}
+                <span className='spacer'>-</span>
               </span>
             </ParallaxSlider>
           </h1>
@@ -78,8 +72,11 @@ export function Header() {
             </div>
 
             <h4 className='text-[clamp(1.55em,2.5vw,2.75em)]'>
-              <span className='block'>Tech</span>
-              <span className='block'>Business &amp; Life in Germany</span>
+              {siteContent.home.heroSubhead.map(line => (
+                <span key={line} className='block'>
+                  {line}
+                </span>
+              ))}
             </h4>
           </div>
         </div>

@@ -1,18 +1,26 @@
-import { Center } from '@/components';
+import Link from 'next/link';
 
-/** @type {import('next').Metadata} */
+import { siteContent } from '@/content';
+
 export const metadata = {
-  title: '404',
-  description:
-    'Helping brands thrive in the digital world. Located in The Netherlands. Delivering tailor-made digital designs and building interactive websites from scratch. © Code by Dennis',
+  title: `Not found | ${siteContent.site.name}`,
+  description: siteContent.site.metaDescription,
 };
 
 export default function NotFound() {
   return (
-    <Center className='h-screen'>
-      <div className='select-none'>
-        <h1 className='text-[max(9.5em,16vw)]'>Not Found</h1>
+    <main className='grid min-h-screen place-items-center bg-background p-8 text-center text-foreground'>
+      <div>
+        <p className='mb-6 text-sm uppercase tracking-[0.18em] text-muted-foreground'>
+          404
+        </p>
+        <h1 className='text-[clamp(3rem,8vw,8rem)] font-light leading-none'>
+          Page not found
+        </h1>
+        <Link className='mt-8 inline-flex underline' href='/'>
+          Return home
+        </Link>
       </div>
-    </Center>
+    </main>
   );
 }

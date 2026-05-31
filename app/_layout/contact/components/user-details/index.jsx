@@ -3,9 +3,9 @@
 import { motion } from 'framer-motion';
 import { ArrowDownLeft } from 'lucide-react';
 import Link from 'next/link';
-import { CldImage } from 'next-cloudinary';
 
 import { MagneticButton } from '@/components';
+import { siteContent } from '@/content';
 
 import { Container, ImageWrapper, MainTitle, Row } from './index.styled';
 
@@ -19,17 +19,21 @@ export function UserDetails({ transformX }) {
       <Row>
         <div className='flex items-center gap-8'>
           <ImageWrapper>
-            <CldImage
-              src='Dennis-Portfolio/images/mqtwxh5znybowgaljrbp'
-              className='rounded-full object-cover'
-              fill={true}
-              alt='Dennis Snellenberg Profile Picture'
-            />
+            <div className='size-full grid place-items-center rounded-full bg-background text-foreground'>
+              <span className='text-sm uppercase tracking-[0.18em]'>
+                {siteContent.site.name
+                  .split(' ')
+                  .map(word => word[0])
+                  .join('')}
+              </span>
+            </div>
           </ImageWrapper>
-          <MainTitle>Let’s work</MainTitle>
+          <MainTitle>{siteContent.site.contactIntro.split(' ')[0]}</MainTitle>
         </div>
         <div className='flex items-center justify-between'>
-          <MainTitle>together</MainTitle>
+          <MainTitle>
+            {siteContent.site.contactIntro.split(' ').slice(1).join(' ')}
+          </MainTitle>
           <div>
             <ArrowDownLeft size={28} strokeWidth={1.25} />
           </div>
@@ -54,24 +58,24 @@ export function UserDetails({ transformX }) {
       <Row>
         <div className='flex w-full flex-col gap-4 lg:flex-row'>
           <div>
-            <a href='mailto:info@abrowndiary.com'>
+            <a href={`mailto:${siteContent.site.email}`}>
               <MagneticButton
                 variant='outline'
                 size='md'
                 className='w-full border-muted-foreground'
               >
-                info@abrowndiary.com
+                {siteContent.site.email}
               </MagneticButton>
             </a>
           </div>
           <div>
-            <a href='tel:+31627847430'>
+            <a href={`tel:${siteContent.site.phone.replaceAll(' ', '')}`}>
               <MagneticButton
                 variant='outline'
                 size='md'
                 className='w-full border-muted-foreground'
               >
-                +49 123 456789
+                {siteContent.site.phone}
               </MagneticButton>
             </a>
           </div>

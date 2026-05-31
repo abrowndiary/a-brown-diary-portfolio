@@ -1,0 +1,115 @@
+{
+  "site": {
+    "name": "A Brown Diary",
+    "owner": "Haris",
+    "tagline": "Tech, business and life in Germany",
+    "location": "Germany",
+    "timezone": "Europe/Berlin",
+    "email": "info@abrowndiary.com",
+    "phone": "+49 123 456789",
+    "contactIntro": "Let's work together",
+    "metaDescription": "A Brown Diary explores physical AI, cybersecurity, automation, digital transformation, business, productivity and life in Germany."
+  },
+  "navigation": [
+    { "href": "/", "title": "home" },
+    { "href": "/work", "title": "work" },
+    { "href": "/about", "title": "about" },
+    { "href": "/contact", "title": "contact" }
+  ],
+  "home": {
+    "eyebrow": "Located in Germany",
+    "headline": "A Brown Diary",
+    "heroSubhead": ["Tech", "Business & Life in Germany"],
+    "intro": "I work across digital transformation, AI implementation, cybersecurity and automation globally. I built life from scratch in Germany and a startup. This diary is where I share what actually works and what does not.",
+    "supportingText": "The combination of physical AI, cybersecurity and digital transformation positions this diary in a practical place in the technology world.",
+    "recentLabel": "domains"
+  },
+  "about": {
+    "headline": "Helping practical ideas become useful digital systems",
+    "intro": "A Brown Diary covers the work, lessons and operating notes behind technology, business and life in Germany.",
+    "body": "Use this page for your story, credentials, journey, beliefs and the topics you want readers or clients to understand before they contact you.",
+    "services": [
+      {
+        "kicker": "01",
+        "title": "AI and automation",
+        "description": "Practical workflows, implementation notes and systems that reduce repetitive work."
+      },
+      {
+        "kicker": "02",
+        "title": "Cybersecurity",
+        "description": "Security-aware thinking for modern teams, products and operating habits."
+      },
+      {
+        "kicker": "03",
+        "title": "Business and life",
+        "description": "Transparent notes about building, moving, learning and staying productive in Germany."
+      }
+    ]
+  },
+  "work": {
+    "headline": "Creating useful digital systems and field notes",
+    "filters": ["All", "AI", "Cybersecurity", "Automation", "Life"],
+    "archiveCount": 14
+  },
+  "contact": {
+    "headline": "Let's start a project together",
+    "details": [
+      { "label": "Email", "value": "info@abrowndiary.com", "href": "mailto:info@abrowndiary.com" },
+      { "label": "Phone", "value": "+49 123 456789", "href": "tel:+49123456789" },
+      { "label": "Location", "value": "Germany", "href": "" }
+    ],
+    "formFields": [
+      { "label": "What's your name?", "placeholder": "John Doe" },
+      { "label": "What's your email?", "placeholder": "john@example.com" },
+      { "label": "What are you working on?", "placeholder": "AI workflow, website, consulting..." },
+      { "label": "Your message", "placeholder": "Tell me what you want to build." }
+    ]
+  },
+  "socialLinks": [],
+  "projects": [
+    {
+      "slug": "life-experiences",
+      "title": "Life & Experiences",
+      "location": "Germany",
+      "services": "Writing, systems, relocation notes",
+      "year": "2026",
+      "category": "Life",
+      "description": "Personal field notes about building a life in Germany, learning systems and real-world tradeoffs.",
+      "media": []
+    },
+    {
+      "slug": "tech-ai-cybersecurity-automation",
+      "title": "Tech, AI, Cybersecurity & Automation",
+      "location": "Global",
+      "services": "AI, cybersecurity, automation",
+      "year": "2026",
+      "category": "AI",
+      "description": "Technical explainers, implementation notes and experiments across AI, security and automation.",
+      "media": []
+    },
+    {
+      "slug": "business-productivity-consulting",
+      "title": "Business, Productivity & Consulting",
+      "location": "Remote",
+      "services": "Consulting, operations, productivity",
+      "year": "2026",
+      "category": "Automation",
+      "description": "Operating systems, consulting lessons and productivity workflows for building with less friction.",
+      "media": []
+    }
+  ],
+  "mediaStrips": [
+    [
+      { "type": "placeholder", "label": "AI" },
+      { "type": "placeholder", "label": "Security" },
+      { "type": "placeholder", "label": "Automation" },
+      { "type": "placeholder", "label": "Germany" }
+    ],
+    [
+      { "type": "placeholder", "label": "Business" },
+      { "type": "placeholder", "label": "Systems" },
+      { "type": "placeholder", "label": "Diary" },
+      { "type": "placeholder", "label": "Field notes" }
+    ]
+  ]
+}

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import { MagneticButton } from '@/components';
+import { siteContent } from '@/content';
 import { socialMedias } from '@/data';
 import { randomId } from '@/utils';
 
@@ -61,10 +62,17 @@ export function SocialInfo() {
           </div>
         </div>
 
-        <div className='flex flex-col'>
-          <ListTitle>Socials</ListTitle>
-          <ul className='flex gap-8'>{medias}</ul>
-        </div>
+        {socialMedias.length ? (
+          <div className='flex flex-col'>
+            <ListTitle>Socials</ListTitle>
+            <ul className='flex gap-8'>{medias}</ul>
+          </div>
+        ) : (
+          <div className='flex flex-col'>
+            <ListTitle>Owner</ListTitle>
+            <p className='mt-7'>{siteContent.site.owner}</p>
+          </div>
+        )}
       </div>
     </div>
   );

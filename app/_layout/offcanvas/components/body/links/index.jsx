@@ -35,7 +35,7 @@ export function OffcanvasLinks() {
         onMouseEnter={() => setSelectedLink(href)}
       >
         <motion.div
-          className='absolute left-[-24px] top-1/2 size-2.5 -translate-y-1/2 rounded-full bg-background'
+          className='size-2.5 absolute left-[-24px] top-1/2 -translate-y-1/2 rounded-full bg-background'
           variants={scale}
           initial='closed'
           animate={isActive ? 'open' : 'closed'}

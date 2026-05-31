@@ -3,6 +3,7 @@
     "paths": {
       "@/components": ["./app/_components/index.js"],
       "@/config": ["./app/_config/index.js"],
+      "@/content": ["./app/_content/index.js"],
       "@/data": ["./app/_data/index.js"],
       "@/fonts": ["./app/_fonts/index.js"],
       "@/hooks": ["./app/_hooks/index.js"],

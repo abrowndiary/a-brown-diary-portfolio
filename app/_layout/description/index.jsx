@@ -5,11 +5,9 @@ import Link from 'next/link';
 import Balancer from 'react-wrap-balancer';
 
 import { MagneticButton, ParallaxFade, ParallaxReveal } from '@/components';
+import { siteContent } from '@/content';
 
 import { Title, Wrapper } from './index.styled';
-
-const phrase =
-  'I worked in digital transformation, AI implementation, cybersecurity and automation globally. Built life from scratch in Germany and a startup. This diary is where I share what actually works — and what doesn’t';
 
 export function Description() {
   return (
@@ -17,15 +15,14 @@ export function Description() {
       <Wrapper>
         <div className='basis-full lg:basis-9/12'>
           <Title>
-            <ParallaxReveal paragraph={phrase} />
+            <ParallaxReveal paragraph={siteContent.home.intro} />
           </Title>
         </div>
 
         <div className='basis-7/12 lg:basis-3/12'>
           <ParallaxFade>
             <Balancer as='p' className='mt-2 text-base lg:text-lg'>
-              The combination of my passion for Physical AI, cybersecurity , and digital transformation
-              positions me in a unique place in the tech world.
+              {siteContent.home.supportingText}
             </Balancer>
           </ParallaxFade>
         </div>

@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 
+import { siteContent } from '@/content';
 import { useFollowPointer } from '@/hooks';
 
 import {
@@ -39,7 +40,7 @@ export function Thumbnail() {
       onPointerMove={({ clientX, clientY }) => moveItems(clientX, clientY)}
     >
       <div className='my-8 flex flex-col gap-10'>
-        <ThumbnailLabel>domains</ThumbnailLabel>
+        <ThumbnailLabel>{siteContent.home.recentLabel}</ThumbnailLabel>
         <ThumbnailList
           handlePointerEnter={handlePointerEnter}
           handlePointerLeave={handlePointerLeave}
@@ -60,7 +61,10 @@ export function Thumbnail() {
           View
         </ThumbnailCursorLabel>
         <ThumbnailAction>
-          More work<sup className='text-muted-foreground'>14</sup>
+          More work
+          <sup className='text-muted-foreground'>
+            {siteContent.work.archiveCount}
+          </sup>
         </ThumbnailAction>
       </div>
     </section>
