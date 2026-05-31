@@ -373,6 +373,7 @@ export function DashboardClient({ initialContent }) {
   const [message, setMessage] = useState('');
   const [publishing, setPublishing] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [mediaFiles, setMediaFiles] = useState([]);
   const [loadingMedia, setLoadingMedia] = useState(false);
   const [deletingMediaPath, setDeletingMediaPath] = useState('');
@@ -440,6 +441,62 @@ export function DashboardClient({ initialContent }) {
     );
   }
 
+  function sendUploadRequest(file) {
+    return new Promise((resolve, reject) => {
+      const request = new XMLHttpRequest();
+      const formData = new FormData();
+      const timeout = window.setTimeout(() => {
+        request.abort();
+        reject(new Error('Upload timed out. Try a smaller file or retry.'));
+      }, 120000);
+
+      formData.append('file', file);
+
+      request.open('POST', '/api/admin/media');
+
+      request.upload.onprogress = event => {
+        if (event.lengthComputable) {
+          setUploadProgress(Math.round((event.loaded / event.total) * 100));
+        }
+      };
+
+      request.onload = () => {
+        window.clearTimeout(timeout);
+
+        let data = {};
+
+        try {
+          data = JSON.parse(request.responseText || '{}');
+        } catch {
+          reject(
+            new Error(
+              'Upload failed before the server returned JSON. The file may be too large for the host.',
+            ),
+          );
+          return;
+        }
+
+        if (request.status >= 200 && request.status < 300) {
+          resolve(data);
+          return;
+        }
+
+        reject(new Error(data.error || 'Upload failed.'));
+      };
+
+      request.onerror = () => {
+        window.clearTimeout(timeout);
+        reject(new Error('Network error during upload.'));
+      };
+
+      request.onabort = () => {
+        window.clearTimeout(timeout);
+      };
+
+      request.send(formData);
+    });
+  }
+
   async function uploadMedia(file) {
     const activeProvider = content.mediaStorage?.activeProvider || 'github';
 
@@ -451,29 +508,24 @@ export function DashboardClient({ initialContent }) {
     }
 
     setUploading(true);
+    setUploadProgress(0);
     setMessage('');
 
-    const formData = new FormData();
-    formData.append('file', file);
+    try {
+      const data = await sendUploadRequest(file);
 
-    const response = await fetch('/api/admin/media', {
-      method: 'POST',
-      body: formData,
-    });
-    const data = await response.json();
-
-    setUploading(false);
-
-    if (!response.ok) {
-      setMessage(data.error || 'Upload failed.');
+      setMessage(`Uploaded ${data.path}`);
+      if (activeView === 'media') {
+        await loadMediaFiles();
+      }
+      return data;
+    } catch (error) {
+      setMessage(error.message || 'Upload failed.');
       return null;
+    } finally {
+      setUploading(false);
+      setUploadProgress(0);
     }
-
-    setMessage(`Uploaded ${data.path}`);
-    if (activeView === 'media') {
-      await loadMediaFiles();
-    }
-    return data;
   }
 
   async function loadMediaFiles() {
@@ -880,7 +932,7 @@ export function DashboardClient({ initialContent }) {
               {uploading ? (
                 <span className='inline-flex items-center gap-2 text-sm text-muted-foreground'>
                   <Loader2 size={16} className='animate-spin' />
-                  Uploading
+                  Uploading {uploadProgress ? `${uploadProgress}%` : ''}
                 </span>
               ) : null}
               <button

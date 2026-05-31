@@ -19,20 +19,22 @@ export function NavbarList() {
 
   const items = navItems.slice(1).map(({ href, title }) => {
     const id = randomId();
-    const isActive = activePath === href;
+    const isActive =
+      activePath === href ||
+      (href !== '/' && activePath?.startsWith(`${href}/`));
 
     return (
-      <li key={id} className='group p-4'>
-        <Link href={href} className='relative' passHref>
+      <li key={id} className='group relative p-4'>
+        <Link href={href} passHref>
           <MagneticButton>
             <span className='text-base capitalize'>{title}</span>
-            <span
-              className={`size-1.5 absolute left-1/2 top-full mt-1 -translate-x-1/2 rounded-full bg-background transition-transform duration-300 ease-in-expo ${
-                isActive ? 'scale-100' : 'scale-0 group-hover:scale-100'
-              }`}
-            />
           </MagneticButton>
         </Link>
+        <span
+          className={`size-1.5 pointer-events-none absolute bottom-1 left-1/2 -translate-x-1/2 rounded-full bg-background transition-transform duration-300 ease-in-expo ${
+            isActive ? 'scale-100' : 'scale-0 group-hover:scale-100'
+          }`}
+        />
       </li>
     );
   });
