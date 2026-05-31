@@ -40,7 +40,7 @@ export default function About() {
             {siteContent.about.services.map(service => (
               <article
                 key={service.title}
-                className='grid gap-8 border-b border-border py-10 md:grid-cols-[0.25fr_0.75fr_1.5fr]'
+                className='grid gap-8 border-b border-border py-10 transition-opacity duration-300 hover:opacity-70 md:grid-cols-[0.25fr_0.75fr_1.5fr]'
               >
                 <p className='text-sm text-muted-foreground'>
                   {service.kicker}

@@ -43,7 +43,7 @@ export default function Work() {
               >
                 <Link
                   href={`/work/${project.slug}`}
-                  className='grid items-center gap-6 py-8 md:grid-cols-[1fr_0.7fr_0.5fr]'
+                  className='grid items-center gap-6 py-8 transition-transform duration-300 ease-in-expo hover:translate-x-4 md:grid-cols-[1fr_0.7fr_0.5fr]'
                 >
                   <h2 className='text-[clamp(2.5rem,6vw,7rem)] font-light leading-none'>
                     {project.title}

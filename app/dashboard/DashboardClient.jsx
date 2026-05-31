@@ -18,6 +18,7 @@ import {
 
 const views = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
+  { id: 'pages', label: 'Page Text', icon: Globe2 },
   { id: 'projects', label: 'Manage Projects', icon: FolderKanban },
   { id: 'add', label: 'Add New Project', icon: Plus },
   { id: 'media', label: 'Media Library', icon: ImageIcon },
@@ -81,6 +82,18 @@ function TextArea(props) {
       {...props}
       className='min-h-36 w-full rounded border border-border bg-background px-4 py-3 text-sm leading-relaxed outline-none transition focus:border-foreground'
     />
+  );
+}
+
+function SectionCard({ title, eyebrow, children }) {
+  return (
+    <section className='rounded bg-secondary p-6 lg:p-8'>
+      <p className='text-xs uppercase tracking-[0.18em] text-muted-foreground'>
+        {eyebrow}
+      </p>
+      <h2 className='mb-8 mt-3 text-4xl font-light'>{title}</h2>
+      <div className='grid gap-5'>{children}</div>
+    </section>
   );
 }
 
@@ -594,6 +607,40 @@ export function DashboardClient({ initialContent }) {
     }));
   }
 
+  function updateSection(section, field, value) {
+    setContent(current => ({
+      ...current,
+      [section]: {
+        ...current[section],
+        [field]: value,
+      },
+    }));
+  }
+
+  function updateFormField(index, field, value) {
+    setContent(current => ({
+      ...current,
+      contact: {
+        ...current.contact,
+        formFields: current.contact.formFields.map((item, itemIndex) =>
+          itemIndex === index ? { ...item, [field]: value } : item,
+        ),
+      },
+    }));
+  }
+
+  function updateAboutService(index, field, value) {
+    setContent(current => ({
+      ...current,
+      about: {
+        ...current.about,
+        services: current.about.services.map((item, itemIndex) =>
+          itemIndex === index ? { ...item, [field]: value } : item,
+        ),
+      },
+    }));
+  }
+
   async function uploadHeroMedia(file) {
     const media = await uploadMedia(file);
 
@@ -828,6 +875,198 @@ export function DashboardClient({ initialContent }) {
                   Remove project
                 </button>
               </div>
+            </div>
+          ) : null}
+
+          {activeView === 'pages' ? (
+            <div className='grid gap-6 xl:grid-cols-2'>
+              <SectionCard title='Home page' eyebrow='Hero and intro'>
+                <Field label='Hero headline'>
+                  <TextInput
+                    value={content.home.headline}
+                    onChange={event =>
+                      updateSection('home', 'headline', event.target.value)
+                    }
+                  />
+                </Field>
+                <Field label='Hero subhead, line 1'>
+                  <TextInput
+                    value={content.home.heroSubhead[0] || ''}
+                    onChange={event =>
+                      updateSection('home', 'heroSubhead', [
+                        event.target.value,
+                        content.home.heroSubhead[1] || '',
+                      ])
+                    }
+                  />
+                </Field>
+                <Field label='Hero subhead, line 2'>
+                  <TextInput
+                    value={content.home.heroSubhead[1] || ''}
+                    onChange={event =>
+                      updateSection('home', 'heroSubhead', [
+                        content.home.heroSubhead[0] || '',
+                        event.target.value,
+                      ])
+                    }
+                  />
+                </Field>
+                <Field label='Main intro paragraph'>
+                  <TextArea
+                    value={content.home.intro}
+                    onChange={event =>
+                      updateSection('home', 'intro', event.target.value)
+                    }
+                  />
+                </Field>
+                <Field label='Small text above About me'>
+                  <TextArea
+                    value={content.home.supportingText}
+                    onChange={event =>
+                      updateSection(
+                        'home',
+                        'supportingText',
+                        event.target.value,
+                      )
+                    }
+                  />
+                </Field>
+                <Field label='Domain label'>
+                  <TextInput
+                    value={content.home.recentLabel}
+                    onChange={event =>
+                      updateSection('home', 'recentLabel', event.target.value)
+                    }
+                  />
+                </Field>
+              </SectionCard>
+
+              <SectionCard title='About page' eyebrow='Profile text'>
+                <Field label='Headline'>
+                  <TextInput
+                    value={content.about.headline}
+                    onChange={event =>
+                      updateSection('about', 'headline', event.target.value)
+                    }
+                  />
+                </Field>
+                <Field label='Intro'>
+                  <TextArea
+                    value={content.about.intro}
+                    onChange={event =>
+                      updateSection('about', 'intro', event.target.value)
+                    }
+                  />
+                </Field>
+                <Field label='Body'>
+                  <TextArea
+                    value={content.about.body}
+                    onChange={event =>
+                      updateSection('about', 'body', event.target.value)
+                    }
+                  />
+                </Field>
+                <div className='grid gap-4'>
+                  <p className='text-xs uppercase tracking-[0.16em] text-muted-foreground'>
+                    Service rows
+                  </p>
+                  {content.about.services.map((service, index) => (
+                    <div
+                      key={service.kicker}
+                      className='grid gap-3 rounded border border-border bg-background p-4'
+                    >
+                      <TextInput
+                        value={service.title}
+                        onChange={event =>
+                          updateAboutService(index, 'title', event.target.value)
+                        }
+                        placeholder='Service title'
+                      />
+                      <TextArea
+                        value={service.description}
+                        onChange={event =>
+                          updateAboutService(
+                            index,
+                            'description',
+                            event.target.value,
+                          )
+                        }
+                        placeholder='Service description'
+                      />
+                    </div>
+                  ))}
+                </div>
+              </SectionCard>
+
+              <SectionCard title='Work page' eyebrow='Archive'>
+                <Field label='Headline'>
+                  <TextArea
+                    value={content.work.headline}
+                    onChange={event =>
+                      updateSection('work', 'headline', event.target.value)
+                    }
+                  />
+                </Field>
+                <Field label='Filters, comma separated'>
+                  <TextInput
+                    value={content.work.filters.join(', ')}
+                    onChange={event => updateFilters(event.target.value)}
+                  />
+                </Field>
+                <Field label='Archive count'>
+                  <TextInput
+                    value={content.work.archiveCount}
+                    onChange={event =>
+                      updateSection(
+                        'work',
+                        'archiveCount',
+                        Number(event.target.value) || 0,
+                      )
+                    }
+                  />
+                </Field>
+              </SectionCard>
+
+              <SectionCard title='Contact page' eyebrow='Form and copy'>
+                <Field label='Headline'>
+                  <TextArea
+                    value={content.contact.headline}
+                    onChange={event =>
+                      updateSection('contact', 'headline', event.target.value)
+                    }
+                  />
+                </Field>
+                <div className='grid gap-4'>
+                  <p className='text-xs uppercase tracking-[0.16em] text-muted-foreground'>
+                    Form fields
+                  </p>
+                  {content.contact.formFields.map((field, index) => (
+                    <div
+                      key={`${field.label}-${index}`}
+                      className='grid gap-3 rounded border border-border bg-background p-4'
+                    >
+                      <TextInput
+                        value={field.label}
+                        onChange={event =>
+                          updateFormField(index, 'label', event.target.value)
+                        }
+                        placeholder='Field label'
+                      />
+                      <TextInput
+                        value={field.placeholder}
+                        onChange={event =>
+                          updateFormField(
+                            index,
+                            'placeholder',
+                            event.target.value,
+                          )
+                        }
+                        placeholder='Placeholder text'
+                      />
+                    </div>
+                  ))}
+                </div>
+              </SectionCard>
             </div>
           ) : null}
 
