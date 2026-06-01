@@ -16,22 +16,9 @@ export default function About() {
           <p className='mb-8 text-sm uppercase tracking-[0.18em] text-muted-foreground'>
             About
           </p>
-          <div className='grid items-end gap-12 lg:grid-cols-[1fr_auto]'>
-            <h1 className='max-w-6xl text-[clamp(3.75rem,9vw,9rem)] font-light leading-[0.95]'>
-              {siteContent.about.headline}
-            </h1>
-            <div className='size-40 md:size-48 relative grid place-items-center rounded-full bg-primary text-background'>
-              <div className='globe-element !relative !left-auto !top-auto !h-16 !w-16 !translate-x-0 !translate-y-0'>
-                <div className='globe-wrap-element'>
-                  <div className='circle-element'></div>
-                  <div className='circle-element'></div>
-                  <div className='circle-element'></div>
-                  <div className='circle-hor-element'></div>
-                  <div className='circle-hor-middle-element'></div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <h1 className='max-w-6xl text-[clamp(3.75rem,9vw,9rem)] font-light leading-[0.95]'>
+            {siteContent.about.headline}
+          </h1>
         </section>
 
         <section className='container grid gap-12 border-t border-border py-24 lg:grid-cols-[1fr_2fr]'>
@@ -53,7 +40,7 @@ export default function About() {
             {siteContent.about.services.map(service => (
               <article
                 key={service.title}
-                className='grid gap-8 border-b border-border py-10 transition-opacity duration-300 hover:opacity-70 md:grid-cols-[0.25fr_0.75fr_1.5fr]'
+                className='grid gap-8 border-b border-border py-10 md:grid-cols-[0.25fr_0.75fr_1.5fr]'
               >
                 <p className='text-sm text-muted-foreground'>
                   {service.kicker}

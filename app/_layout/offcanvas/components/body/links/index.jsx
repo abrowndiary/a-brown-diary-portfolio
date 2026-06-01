@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation';
 
 import { navItems } from '@/data';
 
-import { slideOut } from './variants';
+import { scale, slideOut } from './variants';
 
 export function OffcanvasLinks() {
   const pathname = usePathname();
@@ -21,10 +21,7 @@ export function OffcanvasLinks() {
 
   const items = navItems.map(({ href, title }, index) => {
     const id = index;
-    const currentLink = selectedLink ?? activeLink;
-    const isActive =
-      currentLink === href ||
-      (href !== '/' && currentLink?.startsWith(`${href}/`));
+    const isActive = (selectedLink ?? activeLink) === href;
 
     return (
       <motion.li
@@ -37,10 +34,11 @@ export function OffcanvasLinks() {
         exit='exit'
         onMouseEnter={() => setSelectedLink(href)}
       >
-        <span
-          className={`size-2.5 absolute left-[-42px] top-1/2 -translate-y-1/2 rounded-full bg-background transition-all duration-300 ease-in-expo ${
-            isActive ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
-          }`}
+        <motion.div
+          className='size-2.5 absolute left-[-24px] top-1/2 -translate-y-1/2 rounded-full bg-background'
+          variants={scale}
+          initial='closed'
+          animate={isActive ? 'open' : 'closed'}
         />
         <div
           className={`transition-transform duration-300 ease-out ${

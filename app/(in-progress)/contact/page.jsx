@@ -1,4 +1,3 @@
-import { MagneticButton } from '@/components';
 import { siteContent } from '@/content';
 import { Contact, Navbar, Transition } from '@/layout';
 
@@ -38,14 +37,12 @@ export default function ContactPage() {
                 />
               </label>
             ))}
-            <MagneticButton
+            <button
               type='button'
-              variant='primary'
-              size='md'
-              className='mt-8'
+              className='mt-8 rounded-full bg-foreground px-8 py-4 text-background'
             >
-              Send request
-            </MagneticButton>
+              Prepare message
+            </button>
           </form>
         </section>
 
@@ -56,10 +53,7 @@ export default function ContactPage() {
                 {detail.label}
               </p>
               {detail.href ? (
-                <a
-                  className='mt-4 block text-xl transition-transform duration-300 ease-in-expo hover:translate-x-2 hover:text-primary'
-                  href={detail.href}
-                >
+                <a className='mt-4 block text-xl' href={detail.href}>
                   {detail.value}
                 </a>
               ) : (
