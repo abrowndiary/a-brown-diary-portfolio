@@ -61,8 +61,9 @@ export function UserDetails({ transformX }) {
             <a href={`mailto:${siteContent.site.email}`}>
               <MagneticButton
                 variant='outline'
-                size='md'
-                className='w-full border-muted-foreground'
+                size='default'
+                data-no-wrap='true'
+                className='w-full min-w-[18rem] border-muted-foreground px-8 py-6 text-sm sm:text-base'
               >
                 {siteContent.site.email}
               </MagneticButton>
@@ -72,8 +73,9 @@ export function UserDetails({ transformX }) {
             <a href={`tel:${siteContent.site.phone.replaceAll(' ', '')}`}>
               <MagneticButton
                 variant='outline'
-                size='md'
-                className='w-full border-muted-foreground'
+                size='default'
+                data-no-wrap='true'
+                className='w-full min-w-[14rem] border-muted-foreground px-8 py-6 text-sm sm:text-base'
               >
                 {siteContent.site.phone}
               </MagneticButton>

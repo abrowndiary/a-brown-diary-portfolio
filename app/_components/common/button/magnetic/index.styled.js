@@ -9,4 +9,10 @@ export const MagneticItem = styled.span`
   width: max-content;
   max-width: 14ch;
   word-break: break-all;
+
+  button[data-no-wrap='true'] & {
+    max-width: none;
+    white-space: nowrap;
+    word-break: normal;
+  }
 `;
