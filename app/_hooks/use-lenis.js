@@ -7,13 +7,17 @@ import Lenis from '@studio-freight/lenis';
 export function useLenis() {
   useEffect(() => {
     const lenis = new Lenis();
+    let frameId;
 
     function raf(time) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      frameId = requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf);
+    frameId = requestAnimationFrame(raf);
 
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(frameId);
+      lenis.destroy();
+    };
   }, []);
 }

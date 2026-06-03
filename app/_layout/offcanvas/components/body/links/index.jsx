@@ -57,9 +57,9 @@ export function OffcanvasLinks() {
   });
 
   return (
-    <div className='mt-20 flex flex-col gap-3'>
-      <div className='mb-10 border-b border-solid'>
-        <h5 className='text-xs uppercase text-secondary-foreground'>
+    <div className='flex flex-col gap-3'>
+      <div className='mb-12 border-b border-solid border-background/60 pb-2'>
+        <h5 className='text-xs uppercase tracking-[0.08em] text-background/70'>
           Navigation
         </h5>
       </div>
